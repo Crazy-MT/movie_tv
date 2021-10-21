@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    refreshData();
 
     Timer.periodic(Duration(seconds: 60), (timer) {
       refreshData();

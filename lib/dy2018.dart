@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:dio/dio.dart';
 import 'package:gbk2utf8/gbk2utf8.dart';
 import 'package:html/parser.dart' as htmlparser;
@@ -34,13 +32,6 @@ class Dy2018 extends MovieTv {
       response = "反正是有异常 ${e.toString()}";
       print(e);
     }
-
-    if(lastResponse.isNotEmpty && lastResponse != response) {
-      print('MTMTMT Dy2018.getResponse 不同 ');
-    }
-
-    lastResponse = response;
-    // print('MTMTMT Dy2018.getResponse ${response} ');
-    return ;
+    super.getResponse();
   }
 }
