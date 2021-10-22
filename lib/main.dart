@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,7 +12,15 @@ import 'dy2018.dart';
 import 'meijumi_series.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  initApp().then((value) {
+    runApp(MyApp());
+  });
+}
+
+initApp() async {
+  Hive.init((await getApplicationDocumentsDirectory()).path);
 }
 
 class MyApp extends StatelessWidget {
@@ -49,7 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> refreshData() async {
-    print('MTMTMT _MyHomePageState.refreshData ');
     await dy2018.getResponse();
     for (MeiJuMi meijumiSeries in meijumiSeriesList) {
       await meijumiSeries.getResponse();
@@ -94,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     widgets.add(GestureDetector(
       child: Text(dy2018.title),
-      onTap: ()  async {
+      onTap: () async {
         setState(() {
           dy2018.response = "";
         });
@@ -102,25 +109,21 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {});
       },
     ));
-    widgets.add((
-        Html(
-          data: dy2018.response,
-          onLinkTap: (url, _, __, ___) {
-            // Clipboard.setData(ClipboardData(text: url));
-            launch(dy2018.url + url);
-          },
-        )
-    ));
+    widgets.add((Html(
+      data: dy2018.response,
+      onLinkTap: (url, _, __, ___) {
+        // Clipboard.setData(ClipboardData(text: url));
+        launch(dy2018.url + url);
+      },
+    )));
     // print('MTMTMT _MyHomePageState.children ${Platform.localHostname} ');
-    if(kIsWeb) {
-      widgets.add(Text(
-          "To run web in Chrome\n"
-              "1- Go to flutter\\bin\\cache and remove a file named: flutter_tools.stamp\n"
-              "2- Go to flutter\\packages\\flutter_tools\\lib\\src\\web and open the file chrome.dart.\n"
-              "3- Find '--disable-extensions'\n"
-              "4- Add '--disable-web-security'\n"
-              "5- Add '--user-data-dir=/Users/mt/Desktop/chromedata'"
-      ));
+    if (kIsWeb) {
+      widgets.add(Text("To run web in Chrome\n"
+          "1- Go to flutter\\bin\\cache and remove a file named: flutter_tools.stamp\n"
+          "2- Go to flutter\\packages\\flutter_tools\\lib\\src\\web and open the file chrome.dart.\n"
+          "3- Find '--disable-extensions'\n"
+          "4- Add '--disable-web-security'\n"
+          "5- Add '--user-data-dir=/Users/mt/Desktop/chromedata'"));
     }
     return widgets;
   }
