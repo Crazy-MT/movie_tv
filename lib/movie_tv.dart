@@ -6,23 +6,18 @@ class MovieTv{
   String title;
   String url;
   String response = "";
-  Box lastResponseBox;
-
-  MovieTv() {
-    initData();
-  }
 
   Future getResponse() async {
+    Box lastResponseBox = await Hive.openBox<String>("movie_tv_box");
     String lastResponse = lastResponseBox.get(url, defaultValue: "");
     if(lastResponse.isNotEmpty && lastResponse != response) {
-      print('MTMTMT $title 不同 ');
-      await Dio().get("https://sctapi.ftqq.com/$key.send?title=$title有更新");
+      print('MTMTMT $title 有更新 ');
+      try {
+        await Dio().get("https://sctapi.ftqq.com/$key.send?title=$title有更新");
+      }
+      catch(e) {}
     }
 
-    lastResponseBox.put(url, response);
-  }
-
-  Future<void> initData() async {
-    lastResponseBox = await Hive.openBox<String>("movie_tv_box");
+    lastResponseBox.put(url, response); // 浏览器关闭之后数据会丢失
   }
 }

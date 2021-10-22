@@ -20,7 +20,9 @@ void main() {
 }
 
 initApp() async {
-  Hive.init((await getApplicationDocumentsDirectory()).path);
+  if (!kIsWeb) {
+    Hive.init((await getApplicationDocumentsDirectory()).path);
+  }
 }
 
 class MyApp extends StatelessWidget {
