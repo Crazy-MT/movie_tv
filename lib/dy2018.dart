@@ -29,9 +29,10 @@ class Dy2018 extends MovieTv {
       }
       response = elements[0].children[0].innerHtml;
     } catch (e) {
-      response = "反正是有异常 ${e.toString()}";
+      // response = "反正是有异常 ${e.toString()}";
       print(e);
     }
-    super.getResponse();
+    print('MTMTMT Dy2018.getResponse ${response} ');
+    // super.getResponse();
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     refreshData();
 
-    Timer.periodic(Duration(seconds: 60), (timer) {
+    Timer.periodic(Duration(minutes: Random().nextInt(10)), (timer) {
       refreshData();
     });
   }
@@ -111,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ));
     widgets.add(Html(
-      data: movieTv.response,
+      data: movieTv.response + movieTv.appendResponse,
       onLinkTap: (url, _, __, ___) {
         // Clipboard.setData(ClipboardData(text: url));
         launch(url.contains("http") ? url : movieTv.url + url);

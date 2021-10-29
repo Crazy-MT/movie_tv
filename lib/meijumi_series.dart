@@ -8,7 +8,7 @@ MeiJuMi walkingDeadSeries =
 MeiJuMi("行尸走肉第十一季(点击刷新)", "https://www.meijumi.net/32883.html", 3);
 MeiJuMi seeSeries =
 MeiJuMi("看见第二季(点击刷新)", "https://www.meijumi.net/32978.html", 2);
-List<MeiJuMi> meijumiSeriesList = [walkingDeadSeries, seeSeries];
+List<MeiJuMi> meijumiSeriesList = [walkingDeadSeries];
 
 class MeiJuMi extends MovieTv{
   int pIndex;
@@ -32,7 +32,7 @@ class MeiJuMi extends MovieTv{
         response = ps[pIndex].innerHtml;
       }
     } catch (e) {
-      response = "反正是有异常 ${e.toString()}";
+      // response = "反正是有异常 ${e.toString()}";
       print(e);
     }
     super.getResponse();
