@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   getMovieTvWidget(List<Widget> widgets, MovieTv movieTv)  {
     widgets.add(GestureDetector(
-      child: Text(movieTv.title + "   更新次数${movieTv.updateNum}"),
+      child: Text(movieTv.title + "   更新次数${movieTv.updateNum}" + " 刷新次数${movieTv.refreshNum}"),
       onTap: () async {
         setState(() {
           movieTv.response = "";

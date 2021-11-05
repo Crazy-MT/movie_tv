@@ -7,6 +7,7 @@ class MovieTv {
   String url = "";
   String response = "";
   int updateNum = 0;
+  int refreshNum = 0;
   String appendResponse = "";
 
   Future getResponse() async {
@@ -22,5 +23,6 @@ class MovieTv {
     }
 
     lastResponseBox.put(url, response); // 浏览器关闭之后数据会丢失
+    refreshNum++;
   }
 }
