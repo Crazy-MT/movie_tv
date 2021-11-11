@@ -1,8 +1,6 @@
-import 'package:diff_match_patch/diff_match_patch.dart';
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:movie_tv/server_key.dart';
-import 'package:movie_tv/utils.dart';
 
 class MovieTv {
   String title = "";
@@ -10,8 +8,7 @@ class MovieTv {
   String response = "";
   int updateNum = 0;
   int refreshNum = 0;
-  List detectResp = [];
-  List<Diff> diff = [];
+  String appendResponse = "";
 
   Future getResponse() async {
     Box lastResponseBox = await Hive.openBox<String>("movie_tv_box");
@@ -19,10 +16,10 @@ class MovieTv {
     if (lastResponse.isNotEmpty && lastResponse != response) {
       print('MTMTMT $title 有更新 ');
       updateNum++;
-      diff = Utils().diffStr(lastResponse, response);
-      // try {
-      //   await Dio().get("https://sctapi.ftqq.com/$key.send?title=$title有更新");
-      // } catch (e) {}
+      appendResponse += response;
+      try {
+        await Dio().get("https://sctapi.ftqq.com/$key.send?title=$title有更新");
+      } catch (e) {}
     }
 
     lastResponseBox.put(url, response); // 浏览器关闭之后数据会丢失

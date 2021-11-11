@@ -34,7 +34,6 @@ dependencies:
   gbk2utf8: ^1.0.1
   hive_flutter: ^1.1.0
   path_provider: ^2.0.4
-  diff_match_patch: ^0.4.1
 
 dev_dependencies:
   flutter_test:
