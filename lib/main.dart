@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:diff_match_patch/diff_match_patch.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:movie_tv/movie_tv.dart';
+import 'package:movie_tv/utils.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -30,6 +32,7 @@ initApp() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    util.diffStr("abce", "abce");
     return MaterialApp(
       title: '这是一个爬虫',
       theme: ThemeData(
@@ -90,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     getMovieTvWidget(widgets, dy2018);
 
     if (kIsWeb) {
-      widgets.add(Text("To run web in Chrome\n"
+      widgets.add(SelectableText("To run web in Chrome\n"
           "1- Go to flutter\\bin\\cache and remove a file named: flutter_tools.stamp\n"
           "2- Go to flutter\\packages\\flutter_tools\\lib\\src\\web and open the file chrome.dart.\n"
           "3- Find '--disable-extensions'\n"
@@ -112,11 +115,26 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ));
     widgets.add(Html(
-      data: movieTv.response + movieTv.appendResponse,
+      data: movieTv.response,
       onLinkTap: (url, _, __, ___) {
         // Clipboard.setData(ClipboardData(text: url));
         launch(url.contains("http") ? url : movieTv.url + url);
       },
+        onMathError: (_, __, ___) {
+          return SelectableText(movieTv.response);
+        }
     ));
+
+    for (Diff diff in movieTv.diff) {
+      widgets.add(Container(
+        height: 20,
+      ));
+      widgets.add(Html(
+        data: diff.text,
+        onMathError: (_, __, ___) {
+          return SelectableText(diff.text);
+        },
+      ));
+    }
   }
 }
